@@ -1,0 +1,82 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.SQLException;
+
+public class JDBCExample {
+
+    public static void main(String[] args) {
+
+        String url =
+            "jdbc:mysql://localhost:3306/college";
+        String username = "root";
+        String password = "your_password";
+
+        try {
+            // 1. Establish database connection
+            Connection con = DriverManager.getConnection(
+                url, username, password
+            );
+
+            System.out.println(
+                "Database connected successfully!"
+            );
+
+            // 2. Create a statement
+            Statement stmt = con.createStatement();
+
+            // 3. Execute SQL query
+            ResultSet rs = stmt.executeQuery(
+                "SELECT * FROM students"
+            );
+
+            // 4. Display the records
+            while (rs.next()) {
+                System.out.println(
+                    "ID: " + rs.getInt("id")
+                );
+                System.out.println(
+                    "Name: " + rs.getString("name")
+                );
+                System.out.println(
+                    "Age: " + rs.getInt("age")
+                );
+                System.out.println("----------------");
+            }
+
+            // 5. Close resources
+            rs.close();
+            stmt.close();
+            con.close();
+
+            System.out.println(
+                "Database connection closed."
+            );
+
+        } catch (SQLException e) {
+            System.out.println(
+                "Database error: " + e.getMessage()
+            );
+        }
+    }
+}
+CREATE DATABASE college;
+
+USE college;
+
+CREATE TABLE students (
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    age INT
+);
+
+INSERT INTO students VALUES
+(1, 'Ravi', 20),
+(2, 'Priya', 21),
+(3, 'Arun', 19);<dependency>
+    <groupId>com.mysql</groupId>
+    <artifactId>mysql-connector-j</artifactId>
+    <version>9.5.0</version>
+</dependency>
